@@ -1,0 +1,90 @@
+name: Bug Report
+description: Something isn't working correctly
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this! The more detail you provide, the faster we can fix it.
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Where is the bug happening?
+      options:
+        - Twitch Bot
+        - Discord Bot
+        - Both
+        - OBS Overlay
+        - Setup / Installation
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: "When I type !verse John 3:16, the bot responds with an error instead of the verse."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should have happened?
+      description: What did you expect to happen instead?
+      placeholder: "The bot should have responded with John 3:16 from the ESV."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Type !verse John 3:16 in Twitch chat
+        2. Bot responds with "Sorry, I couldn't find that verse"
+        3. Same verse works fine with /verse on Discord
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error logs (if any)
+      description: Paste any error messages from the console here.
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: esv-api
+    attributes:
+      label: ESV API Key configured?
+      options:
+        - "Yes"
+        - "No (using fallback API)"
+        - Not sure
+    validations:
+      required: false
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      description: "Run `node --version` in your terminal"
+      placeholder: "v20.11.0"
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      placeholder: "Windows 11 / macOS 14 / Ubuntu 24.04"
+    validations:
+      required: false
