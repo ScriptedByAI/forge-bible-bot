@@ -1,0 +1,29 @@
+{
+  "name": "forge-bible-bot",
+  "version": "1.0.0",
+  "description": "Forge Bible Bot — A free, open-source Bible bot for Twitch & Discord. Built for Christian content creators and online ministries.",
+  "main": "start.js",
+  "scripts": {
+    "start": "node start.js",
+    "twitch": "node start.js twitch",
+    "discord": "node start.js discord",
+    "setup": "node setup-wizard.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "discord.js": "^14.14.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "node-cron": "^3.0.3",
+    "tmi.js": "^1.8.5"
+  },
+  "keywords": ["bible", "twitch", "discord", "bot", "forge-bible-bot", "christian", "ministry", "scripture"],
+  "author": "ForgedByGrace7",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ScriptedByAI/forge-bible-bot"
+  },
+  "homepage": "https://github.com/ScriptedByAI/forge-bible-bot#readme"
+}

@@ -1,0 +1,42 @@
+{
+  "_comment": "Customize your bot's personal commands here. Leave fields blank or delete them to use defaults.",
+  "_docs": "See README.md for full customization guide.",
+
+  "about": {
+    "title": "About This Community",
+    "description": "A community for faith, fellowship, and the Word of God.\n\nEveryone is welcome here — no matter where you are in your journey.\n\n*\"Therefore, if anyone is in Christ, he is a new creation.\"*\n— **2 Corinthians 5:17 (ESV)**",
+    "twitch_url": "",
+    "activities": "Bible studies, fellowship, and prayer"
+  },
+
+  "testimony": {
+    "enabled": false,
+    "title": "My Testimony",
+    "description": "Want to hear how God changed my life? Ask in chat!",
+    "link_url": "",
+    "link_text": "Read My Testimony"
+  },
+
+  "ministry": {
+    "enabled": false,
+    "command_name": "ministry",
+    "title": "Our Ministry",
+    "description": "Learn more about what God is doing through this community.",
+    "verse": "As iron sharpens iron, so one man sharpens another.",
+    "verse_ref": "Proverbs 27:17 (ESV)"
+  },
+
+  "prayer": {
+    "public_channel": "#prayer-requests",
+    "anonymous_form_url": "",
+    "crisis_info": "If you're in crisis, please call **988** or text **HOME** to **741741**."
+  },
+
+  "support": {
+    "enabled": true,
+    "message": "Forge Bible Bot is free for all Christian ministries. If it's been a blessing, consider supporting the project:",
+    "url": "https://streamelements.com/forgedbygrace7/tip"
+  },
+
+  "footer": "Forge Bible Bot | Jesus is Lord!"
+}

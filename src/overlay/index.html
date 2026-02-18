@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Forge — Verse Overlay</title>
+<style>
+  /* ============================================
+     OBS Browser Source Overlay
+     ForgedByGrace7 — The Forge
+     ============================================
+     
+     OBS SETUP:
+     1. Add a "Browser Source" in OBS
+     2. URL: http://localhost:3000
+     3. Width: 1920  Height: 1080
+     4. Check "Shutdown source when not visible" (optional)
+     5. Custom CSS: (leave blank — styles are built in)
+     
+     The verse will appear at the bottom of the screen
+     with a smooth slide-up animation, stay for 10 seconds,
+     then fade out gracefully.
+  */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: transparent;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+  }
+
+  /* === VERSE DISPLAY (bottom of screen) === */
+  #verse-container {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120%);
+    width: 85%;
+    max-width: 1400px;
+    background: linear-gradient(135deg, rgba(15, 15, 25, 0.92), rgba(25, 20, 35, 0.92));
+    border: 1px solid rgba(212, 160, 23, 0.4);
+    border-left: 4px solid #D4A017;
+    border-radius: 8px;
+    padding: 20px 28px;
+    opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 160, 23, 0.15);
+  }
+
+  #verse-container.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  #verse-container.hiding {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .verse-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .verse-icon {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+
+  .verse-reference {
+    font-size: 17px;
+    font-weight: 700;
+    color: #D4A017;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .verse-translation {
+    font-size: 13px;
+    color: rgba(212, 160, 23, 0.7);
+    margin-left: 10px;
+    font-weight: 400;
+  }
+
+  .verse-text {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #e8e8f0;
+    font-style: italic;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .verse-footer {
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: right;
+  }
+
+  /* === TOPIC BANNER (top of screen) === */
+  #topic-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(15, 15, 25, 0.85);
+    border: 1px solid rgba(74, 144, 217, 0.3);
+    border-radius: 6px;
+    padding: 10px 18px;
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.5s ease;
+  }
+
+  #topic-container.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .topic-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(74, 144, 217, 0.8);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .topic-reference {
+    font-size: 16px;
+    color: #e8e8f0;
+    font-weight: 600;
+  }
+
+  /* === SUBTLE GLOW ANIMATION === */
+  @keyframes borderGlow {
+    0%, 100% { border-left-color: #D4A017; }
+    50% { border-left-color: #e8b730; }
+  }
+
+  #verse-container.visible {
+    animation: borderGlow 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- Topic banner (top-right, persistent while set) -->
+<div id="topic-container">
+  <div class="topic-label">📖 Now Studying</div>
+  <div class="topic-reference" id="topic-text"></div>
+</div>
+
+<!-- Verse popup (bottom center, appears temporarily) -->
+<div id="verse-container">
+  <div class="verse-header">
+    <span class="verse-icon">📖</span>
+    <span class="verse-reference" id="verse-ref"></span>
+    <span class="verse-translation" id="verse-trans"></span>
+  </div>
+  <div class="verse-text" id="verse-text"></div>
+  <div class="verse-footer">
+    <span id="verse-user"></span> · The Forge — ForgedByGrace7
+  </div>
+</div>
+
+<script>
+  // ============================================
+  // SSE Connection to the bot's overlay server
+  // ============================================
+
+  const DISPLAY_DURATION = 10000; // How long verse stays on screen (10 seconds)
+  const VERSE_QUEUE = [];
+  let isShowingVerse = false;
+
+  const verseContainer = document.getElementById('verse-container');
+  const topicContainer = document.getElementById('topic-container');
+
+  function connect() {
+    const eventSource = new EventSource('/events');
+
+    eventSource.addEventListener('verse', (e) => {
+      const data = JSON.parse(e.data);
+      VERSE_QUEUE.push(data);
+      processQueue();
+    });
+
+    eventSource.addEventListener('topic', (e) => {
+      const data = JSON.parse(e.data);
+      document.getElementById('topic-text').textContent = data.reference;
+      topicContainer.classList.add('visible');
+    });
+
+    eventSource.addEventListener('topic_clear', () => {
+      topicContainer.classList.remove('visible');
+    });
+
+    eventSource.onerror = () => {
+      console.log('SSE disconnected, reconnecting in 3s...');
+      eventSource.close();
+      setTimeout(connect, 3000);
+    };
+  }
+
+  function processQueue() {
+    if (isShowingVerse || VERSE_QUEUE.length === 0) return;
+    isShowingVerse = true;
+
+    const data = VERSE_QUEUE.shift();
+    showVerse(data);
+  }
+
+  function showVerse(data) {
+    // Populate content
+    document.getElementById('verse-ref').textContent = data.reference;
+    document.getElementById('verse-trans').textContent = `(${data.translation})`;
+    document.getElementById('verse-user').textContent = `Looked up by ${data.username}`;
+
+    // Truncate very long verses for the overlay
+    let text = data.text;
+    if (text.length > 350) {
+      text = text.substring(0, 347) + '...';
+    }
+    document.getElementById('verse-text').textContent = text;
+
+    // Show with animation
+    verseContainer.classList.remove('hiding');
+    verseContainer.classList.add('visible');
+
+    // Hide after duration
+    setTimeout(() => {
+      verseContainer.classList.remove('visible');
+      verseContainer.classList.add('hiding');
+
+      // After fade-out animation completes
+      setTimeout(() => {
+        verseContainer.classList.remove('hiding');
+        isShowingVerse = false;
+        processQueue(); // Show next queued verse
+      }, 900);
+    }, DISPLAY_DURATION);
+  }
+
+  // Start connection
+  connect();
+</script>
+
+</body>
+</html>
