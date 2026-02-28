@@ -10,23 +10,40 @@ Forge Bible Bot brings Scripture into your community with verse lookups, Bible t
 
 ---
 
-## Fastest Way to Get Started
-
-### **Use the hosted version — no setup required:**
+## ⚡ Get Started Instantly — No Setup Required
 
 ### **[forgebiblebot.com](https://forgebiblebot.com)**
 
-Sign in with Twitch or Discord, and the bot joins your channel automatically. Free forever — no downloads, no servers, no technical skills needed.
+The **hosted version** is the recommended way to use Forge Bible Bot. Sign in with Twitch or Discord, and the bot joins your channel automatically. Free forever — no downloads, no servers, no technical skills needed.
 
-The hosted version includes everything below plus a web dashboard, automatic updates, and managed infrastructure.
+The hosted version is **actively developed** and includes:
+
+- Full web dashboard for managing your bot
+- All the latest features, commands, and translations
+- Automatic updates — you always have the newest version
+- Managed infrastructure — no server maintenance on your end
+- Priority support via [The Forge Discord](https://discord.gg/7bP4p8a2cX)
+
+**If you're looking for the best Forge Bible Bot experience, [forgebiblebot.com](https://forgebiblebot.com) is the way to go.**
 
 ---
 
-## Self-Hosted Version
+## ⚠️ About This Repository (Self-Hosted Version)
 
-Want to run your own instance? This repo has everything you need.
+This open-source repo contains a **basic, standalone version** of Forge Bible Bot. It is functional but **does not include many of the advanced features available on the hosted version** and **is not actively maintained or updated** to match the hosted platform.
 
-### Features
+**What this means for you:**
+
+- This repo reflects an **earlier snapshot** of the bot — it works, but it's limited compared to what's available at [forgebiblebot.com](https://forgebiblebot.com)
+- New features, improvements, and bug fixes go to the **hosted version first** (and in most cases, exclusively)
+- If you run into issues with the self-hosted version, we may not be able to provide support — our focus is on the hosted platform
+- You're welcome to fork and modify this code under the MIT license, but don't expect it to keep pace with the hosted version
+
+**We strongly recommend using the [hosted version](https://forgebiblebot.com) unless you have a specific reason to self-host.**
+
+---
+
+## Self-Hosted Features (This Repo)
 
 | Feature | Twitch | Discord | Description |
 |---------|--------|---------|-------------|
@@ -46,16 +63,20 @@ Want to run your own instance? This repo has everything you need.
 | **Scheduled VOTD** | — | ✅ | Auto-post Verse of the Day daily |
 | **7 Translations** | ✅ | ✅ | ESV, KJV, NKJV, NLT, NASB, NIV, WEB |
 
+> **Looking for more?** The [hosted version](https://forgebiblebot.com) has additional features, commands, and integrations not available in this repo.
+
 ---
 
-### Quick Start (5 Minutes)
+## Quick Start (Self-Hosted)
 
-#### Prerequisites
+> **Reminder:** The easiest and most feature-rich way to use Forge Bible Bot is the [hosted version](https://forgebiblebot.com). The instructions below are for those who want to run a basic self-hosted instance.
+
+### Prerequisites
 
 - **Node.js 18+** — [Download here](https://nodejs.org/)
 - **A Twitch account** and/or **Discord server**
 
-#### Step 1: Download
+### Step 1: Download
 
 ```bash
 git clone https://github.com/ScriptedByAI/forge-bible-bot.git
@@ -63,7 +84,7 @@ cd forge-bible-bot
 npm install
 ```
 
-#### Step 2: Configure
+### Step 2: Configure
 
 **Option A — Setup Wizard (recommended):**
 ```bash
@@ -76,7 +97,7 @@ cp .env.example .env
 ```
 Then edit `.env` with your API keys (see below).
 
-#### Step 3: Run
+### Step 3: Run
 
 ```bash
 npm start
@@ -215,12 +236,7 @@ forge-bible-bot/
 
 ## Contributing
 
-Contributions are welcome — trivia questions, bug fixes, translations, or features.
-
-1. Fork the repo
-2. Create a branch: `git checkout -b feature/your-feature`
-3. Commit and push
-4. Open a Pull Request
+This repo is open source under the MIT license. You're welcome to fork it, modify it, and use it however serves your ministry. However, please note that pull requests may not be actively reviewed, as development efforts are focused on the [hosted platform](https://forgebiblebot.com).
 
 ---
 
